@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import ChatBot from "./chatbot.png";
 import User from "./User.png";
 // import axios from "axios";
 // import Bottom from "./onclick";
 function CbChats(props) {
+  const el = useRef(null);
+
   const { chatData } = props;
   console.log("Chat history props check:", chatData);
+
+  useEffect(() => {
+    el.current.scrollIntoView({ block: "end", behavior: "smooth" });
+  });
   // const [value, setvalue] = useState(
   //   count.chatDataAfterPost ? count.chatDataAfterPost : []
   // );
@@ -38,7 +44,7 @@ function CbChats(props) {
           </div>
         </div>
       </div>
-      <div>
+      <div ref={el}>
         {chatData?.map((val, index) => (
           <div key={index + 1}>
             <div className="CbDynamic">
