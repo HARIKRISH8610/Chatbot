@@ -1,23 +1,29 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import ChatBot from "./chatbot.png";
 import User from "./User.png";
-import axios from "axios";
-import Bottom from "./onclick";
-function CbChats(count) {
-  const [value, setvalue] = useState([]);
-  const getValApi = async () => {
-    try {
-      let endpoint = "https://62299094be12fc4538a1a26a.mockapi.io/inValueUser";
-      var getData = await axios.get(endpoint);
-      setvalue(getData.data);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-  useEffect(() => {
-    console.log("vakskj", count.number);
-    getValApi();
-  }, [count.number]);
+// import axios from "axios";
+// import Bottom from "./onclick";
+function CbChats(props) {
+  const { chatData } = props;
+  console.log("Chat history props check:", chatData);
+  // const [value, setvalue] = useState(
+  //   count.chatDataAfterPost ? count.chatDataAfterPost : []
+  // );
+
+  // const getValApi = async () => {
+  //   try {
+  //     let endpoint = "https://62299094be12fc4538a1a26a.mockapi.io/inValueUser";
+  //     var getData = await axios.get(endpoint);
+  //     setvalue(getData.data);
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   console.log("vakskj", count.number);
+  //   getValApi();
+  // }, []);
 
   return (
     <div className="CbChats">
@@ -33,7 +39,7 @@ function CbChats(count) {
         </div>
       </div>
       <div>
-        {value.map((val, index) => (
+        {chatData?.map((val, index) => (
           <div key={index + 1}>
             <div className="CbDynamic">
               <div className="InCbChat">

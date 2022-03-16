@@ -1,24 +1,41 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import CbChats from "./CbChats";
 import "./App.css";
 import PostInApi from "./postInApi";
 
 function ChatBotInner() {
   const [val, setVal] = useState();
-
+  const [chatData, setChatData] = useState([]);
   const [count, setcount] = useState(1);
 
   const countNum = () => {
     setcount(count + 1);
   };
+
   var valCount = {
     number: count,
   };
 
+  const getValApi = async () => {
+    try {
+      let endpoint = "https://62299094be12fc4538a1a26a.mockapi.io/inValueUser";
+      var getData = await axios.get(endpoint);
+      setChatData(getData.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  // Component did mount ----> React Lifecycle - Mounting Phase
+  useEffect(() => {
+    getValApi();
+  }, []);
+
   return (
     <div className="ChatBotIn">
       <div className="CbChat">
-        <CbChats number={valCount.number} />
+        <CbChats number={valCount.number} chatData={chatData} />
       </div>
       <div className="CbBottem">
         <input
@@ -29,7 +46,11 @@ function ChatBotInner() {
         ></input>
         <button
           onClick={() => {
-            PostInApi(val);
+            PostInApi(val).then((res) => {
+              if (res?.data?.id) {
+                setTimeout(() => getValApi(), 100);
+              }
+            });
             countNum();
           }}
         >
