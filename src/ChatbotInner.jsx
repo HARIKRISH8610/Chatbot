@@ -1,41 +1,36 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import CbChats from "./CbChats";
 import "./App.css";
-import PostInApi from "./postInApi";
+import setLocalstorage from "./localstorage";
 
 function ChatBotInner() {
   const [val, setVal] = useState();
-  const [chatData, setChatData] = useState([]);
-  const [count, setcount] = useState(1);
+  const [count, setcount] = useState(0);
+  const [chat, setchat] = useState([]);
 
-  const countNum = () => {
+  const countingClick = () => {
     setcount(count + 1);
   };
 
-  var valCount = {
-    number: count,
-  };
+  useEffect(() => {
+    fnGetVal();
+  }, [count]);
 
-  const getValApi = async () => {
-    try {
-      let endpoint = "https://62299094be12fc4538a1a26a.mockapi.io/inValueUser";
-      var getData = await axios.get(endpoint);
-      setChatData(getData.data);
-    } catch (err) {
-      console.log(err.message);
+  const fnGetVal = () => {
+    var getlocalVal = localStorage.getItem("message");
+    if (getlocalVal !== null) {
+      var splitVal = getlocalVal.split(",");
+      setchat(splitVal);
     }
   };
-
-  // Component did mount ----> React Lifecycle - Mounting Phase
-  useEffect(() => {
-    getValApi();
-  }, []);
+  const resetIn = () => {
+    document.getElementById("InMsg").value = "";
+  };
 
   return (
     <div className="ChatBotIn">
       <div className="CbChat">
-        <CbChats number={valCount.number} chatData={chatData} />
+        <CbChats chats={chat} />
       </div>
       <div className="CbBottem">
         <input
@@ -43,15 +38,13 @@ function ChatBotInner() {
           id="InMsg"
           onChange={(e) => setVal(e.target.value)}
           name="CbInput"
+          autoComplete="off"
         ></input>
         <button
           onClick={() => {
-            PostInApi(val).then((res) => {
-              if (res?.data?.id) {
-                setTimeout(() => getValApi(), 100);
-              }
-            });
-            countNum();
+            setLocalstorage(val);
+            resetIn();
+            countingClick();
           }}
         >
           <svg
