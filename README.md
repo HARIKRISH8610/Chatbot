@@ -1,5 +1,10 @@
 # Chatbot Application
 
+
+![gifchatbot](https://user-images.githubusercontent.com/98573992/158810934-bc6e9edc-aabc-4455-9f1b-62d517f70660.gif)
+
+
+
 ## Definition
 
 A chatbot is a software or computer program that simulates human conversation or `chatter` through text or voice interactions.
